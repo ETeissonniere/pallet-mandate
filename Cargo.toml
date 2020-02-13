@@ -3,6 +3,10 @@ name = "pallet-mandate"
 version = "2.0.0"
 authors = ['Eliott Teissonniere <git.eliott@teissonniere.org>']
 edition = "2018"
+readme = "README.md"
+license-file = "LICENSE"
+repository = "https://github.com/ETeissonniere/pallet-mandate"
+description = "A Substrate pallet to help over modules dispatch root calls"
 
 [features]
 default = ['std']

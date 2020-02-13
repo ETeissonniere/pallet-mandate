@@ -2,6 +2,8 @@
 
 A Substrate pallet to allow the use of `sudo` functions from a runtime module like the `collective`.
 
+![Screen Shot 2020-02-13 at 12 30 21 PM](https://user-images.githubusercontent.com/10683430/74475712-c9557480-4e5c-11ea-91e1-626412815cd4.png)
+
 
 # Usage
 

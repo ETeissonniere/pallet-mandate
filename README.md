@@ -28,8 +28,8 @@ git = 'https://github.com/ETeissonniere/pallet-mandate'
 [features]
 default = ['std']
 std = [
-	# Your substrate modules /std calls here
-	# ...
+    # Your substrate modules /std calls here
+    # ...
 
     'mandate/std',
 ]

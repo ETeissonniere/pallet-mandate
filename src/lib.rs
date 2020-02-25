@@ -4,6 +4,7 @@
 //! can use the `apply` function to dispatch calls as root. Think of this module as an
 //! other `sudo` module controlled by another module (ex: a multisig or collective).
 
+use frame_support::weights::{FunctionOf, GetDispatchInfo};
 use frame_support::{decl_event, decl_module, dispatch::DispatchResult, Parameter};
 use sp_runtime::{
     traits::{Dispatchable, EnsureOrigin},
@@ -14,7 +15,7 @@ use sp_std::prelude::Box;
 /// The module's configuration trait.
 pub trait Trait: system::Trait {
     type Event: From<Event> + Into<<Self as system::Trait>::Event>;
-    type Proposal: Parameter + Dispatchable<Origin = Self::Origin>;
+    type Call: Parameter + Dispatchable<Origin = Self::Origin> + GetDispatchInfo;
 
     /// Origin that can call this module and execute sudo actions. Typically
     /// the `collective` module.
@@ -33,11 +34,16 @@ decl_module! {
     pub struct Module<T: Trait> for enum Call where origin: T::Origin {
         fn deposit_event() = default;
 
-        pub fn apply(origin, proposal: Box<T::Proposal>) -> DispatchResult {
+        #[weight = FunctionOf(
+            |args: (&Box<<T as Trait>::Call>,)| args.0.get_dispatch_info().weight + 10_000,
+            |args: (&Box<<T as Trait>::Call>,)| args.0.get_dispatch_info().class,
+            true
+        )]
+        pub fn apply(origin, call: Box<<T as Trait>::Call>) -> DispatchResult {
             T::ExternalOrigin::ensure_origin(origin)?;
 
             // Shamelessly stollen from the `sudo` module
-            let res = match proposal.dispatch(system::RawOrigin::Root.into()) {
+            let res = match call.dispatch(system::RawOrigin::Root.into()) {
                 Ok(_) => true,
                 Err(e) => {
                     let e: DispatchError = e.into();

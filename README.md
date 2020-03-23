@@ -15,7 +15,6 @@ Edit `runtime/Cargo.toml` and add the following:
 default-features = false
 version = '2.0.0'
 package = "pallet-mandate"
-git = 'https://github.com/ETeissonniere/pallet-mandate'
 ```
 
 Then add the `mandate/std` to the `[features]` section in the `std` array, it should
@@ -25,7 +24,6 @@ look like this:
 default-features = false
 version = '2.0.0'
 package = "pallet-mandate"
-git = 'https://github.com/ETeissonniere/pallet-mandate'
 
 [features]
 default = ['std']

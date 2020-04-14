@@ -4,12 +4,14 @@
 //! can use the `apply` function to dispatch calls as root. Think of this module as an
 //! other `sudo` module controlled by another module (ex: a multisig or collective).
 
-use frame_support::weights::{FunctionOf, GetDispatchInfo};
-use frame_support::{decl_event, decl_module, dispatch::DispatchResult, Parameter};
-use sp_runtime::{
-    traits::{Dispatchable, EnsureOrigin},
-    DispatchError,
+use frame_support::{
+    decl_event, decl_module,
+    dispatch::DispatchResult,
+    traits::EnsureOrigin,
+    weights::{FunctionOf, GetDispatchInfo},
+    Parameter,
 };
+use sp_runtime::traits::Dispatchable;
 use sp_std::prelude::Box;
 
 /// The module's configuration trait.
@@ -46,7 +48,6 @@ decl_module! {
             let res = match call.dispatch(system::RawOrigin::Root.into()) {
                 Ok(_) => true,
                 Err(e) => {
-                    let e: DispatchError = e.into();
                     sp_runtime::print(e);
                     false
                 }

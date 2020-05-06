@@ -6,12 +6,12 @@
 
 use frame_support::{
     decl_event, decl_module,
-    dispatch::DispatchResult,
     traits::EnsureOrigin,
-    weights::{FunctionOf, GetDispatchInfo},
+    weights::{FunctionOf, GetDispatchInfo, Pays},
     Parameter,
 };
-use sp_runtime::traits::Dispatchable;
+use frame_system as system;
+use sp_runtime::{traits::Dispatchable, DispatchResult};
 use sp_std::prelude::Box;
 
 /// The module's configuration trait.
@@ -27,7 +27,7 @@ pub trait Trait: system::Trait {
 decl_event!(
     pub enum Event {
         /// A root operation was executed, show result
-        RootOp(bool),
+        RootOp(DispatchResult),
     }
 );
 
@@ -36,25 +36,19 @@ decl_module! {
     pub struct Module<T: Trait> for enum Call where origin: T::Origin {
         fn deposit_event() = default;
 
+        /// Let the configured origin dispatch a call as root
         #[weight = FunctionOf(
             |args: (&Box<<T as Trait>::Call>,)| args.0.get_dispatch_info().weight + 10_000,
             |args: (&Box<<T as Trait>::Call>,)| args.0.get_dispatch_info().class,
-            true
+            Pays::Yes,
         )]
-        pub fn apply(origin, call: Box<<T as Trait>::Call>) -> DispatchResult {
+        pub fn apply(origin, call: Box<<T as Trait>::Call>) {
             T::ExternalOrigin::ensure_origin(origin)?;
 
             // Shamelessly stollen from the `sudo` module
-            let res = match call.dispatch(system::RawOrigin::Root.into()) {
-                Ok(_) => true,
-                Err(e) => {
-                    sp_runtime::print(e);
-                    false
-                }
-            };
+            let res = call.dispatch(frame_system::RawOrigin::Root.into());
 
-            Self::deposit_event(Event::RootOp(res));
-            Ok(())
+            Self::deposit_event(Event::RootOp(res.map(|_| ()).map_err(|e| e.error)));
         }
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "pallet-mandate"
-version = "2.0.1"
+version = "2.0.2"
 authors = ['Eliott Teissonniere <git.eliott@teissonniere.org>']
 edition = "2018"
 readme = "README.md"
@@ -17,7 +17,7 @@ std = [
     'sp-runtime/std',
     'sp-io/std',
     'sp-std/std',
-    'system/std',
+    'frame-system/std',
 ]
 
 [dependencies.serde]
@@ -33,25 +33,24 @@ version = '1.2.0'
 
 [dependencies.frame-support]
 default-features = false
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.7'
 
 [dev-dependencies.sp-core]
 default-features = false
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.7'
 
 [dependencies.sp-io]
 default-features = false
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.7'
 
 [dependencies.sp-runtime]
 default-features = false
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.7'
 
 [dependencies.sp-std]
 default-features = false
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.7'
 
-[dependencies.system]
+[dependencies.frame-system]
 default-features = false
-package = 'frame-system'
-version = '2.0.0-alpha.6'
+version = '2.0.0-alpha.7'

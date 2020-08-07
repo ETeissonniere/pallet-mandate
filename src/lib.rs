@@ -5,10 +5,7 @@
 //! other `sudo` module controlled by another module (ex: a multisig or collective).
 
 use frame_support::{
-    decl_event, decl_module,
-    traits::EnsureOrigin,
-    weights::{FunctionOf, GetDispatchInfo, Pays},
-    Parameter,
+    decl_event, decl_module, traits::EnsureOrigin, weights::GetDispatchInfo, Parameter,
 };
 use frame_system as system;
 use sp_runtime::{traits::Dispatchable, DispatchResult};
@@ -37,11 +34,7 @@ decl_module! {
         fn deposit_event() = default;
 
         /// Let the configured origin dispatch a call as root
-        #[weight = FunctionOf(
-            |args: (&Box<<T as Trait>::Call>,)| args.0.get_dispatch_info().weight + 10_000,
-            |args: (&Box<<T as Trait>::Call>,)| args.0.get_dispatch_info().class,
-            Pays::Yes,
-        )]
+        #[weight = (call.get_dispatch_info().weight + 10_000, call.get_dispatch_info().class)]
         pub fn apply(origin, call: Box<<T as Trait>::Call>) {
             T::ExternalOrigin::ensure_origin(origin)?;
 

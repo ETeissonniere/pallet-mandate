@@ -15,6 +15,7 @@ std = [
   "frame-system/std",
   "parity-scale-codec/std",
   "serde",
+  "sp-core/std",
   "sp-io/std",
   "sp-runtime/std",
   "sp-std/std",

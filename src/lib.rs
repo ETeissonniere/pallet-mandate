@@ -15,7 +15,7 @@ pub mod pallet {
 
     #[pallet::config]
     pub trait Config: frame_system::Config {
-        type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+        type Event: From<Event> + IsType<<Self as frame_system::Config>::Event>;
         type Call: Parameter + Dispatchable<Origin = Self::Origin> + GetDispatchInfo;
 
         /// Origin that can call this module and execute sudo actions. Typically
@@ -28,7 +28,7 @@ pub mod pallet {
 
     #[pallet::event]
     #[pallet::generate_deposit(pub(super) fn deposit_event)]
-    pub enum Event<T: Config> {
+    pub enum Event {
         /// A root operation was executed, show result
         RootOp(DispatchResult),
     }

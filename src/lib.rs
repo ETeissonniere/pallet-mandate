@@ -29,7 +29,7 @@ decl_event!(
 
 decl_module! {
     /// The module declaration.
-    pub struct Module<T: Config> for enum Call where origin: T::Origin {
+    pub struct Pallet<T: Config> for enum Call where origin: T::Origin {
         fn deposit_event() = default;
 
         /// Let the configured origin dispatch a call as root

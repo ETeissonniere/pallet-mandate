@@ -4,6 +4,8 @@
 //! can use the `apply` function to dispatch calls as root. Think of this module as an
 //! other `sudo` module controlled by another module (ex: a multisig or collective).
 
+pub use pallet::*;
+
 #[frame_support::pallet]
 pub mod pallet {
     use frame_support::{dispatch::Dispatchable, pallet_prelude::*, weights::GetDispatchInfo};
